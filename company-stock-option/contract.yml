@@ -156,7 +156,7 @@ definitions:
         type: string
         example: "b163a34e-26d5-40d2-8a08-282e692d4d2e"
         description: uuid
-      option_plan_name:
+      plan_name:
         type: string
         example: "Hilton"
         description: can not be null
@@ -256,7 +256,7 @@ definitions:
     type: object
     required:
       - plan_name
-      - isin
+      - asset_id
       - number_of_shares
       - strike_price
       - vesting_start_date
@@ -271,7 +271,7 @@ definitions:
       plan_name:
         type: string
         example: Cisco Co
-      isin:
+      asset_id:
         type: string
         example: YPI-123456789
       number_of_shares:
