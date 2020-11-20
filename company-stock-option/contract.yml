@@ -216,7 +216,7 @@ definitions:
       vesting_start_quantity:
         type: number
         example: 500
-      time_framne:
+      time_frame:
         type: string
         enum:
           - "DAILY"
@@ -265,7 +265,7 @@ definitions:
       - strike_price
       - vesting_start_date
       - vesting_start_quantity
-      - time_framne
+      - time_frame
       - vesting_duration
       - expiration_from_termination
       - delivery_period
@@ -291,7 +291,7 @@ definitions:
       vesting_start_quantity:
         type: integer
         example: 250
-      time_framne:
+      time_frame:
         type: string
         enum:
           - "DAILY"
