@@ -12,7 +12,7 @@ tags:
 schemes:
   - http
 paths:
-  /admin/v1/option-plan:
+  /admin/v1/option-plan/client/{client_id}:
     post:
       tags:
         - Company Stock Options
@@ -24,6 +24,11 @@ paths:
       produces:
         - application/json
       parameters:
+        - name: "client_id"
+          in: path
+          type: string
+          required: true
+          description: uuid
         - in: body
           name: request body
           description: body
@@ -34,7 +39,32 @@ paths:
         '200':
           description: OK
           schema:
-            $ref: '#/definitions/OptionPlanResponseDTO'
+            $ref: '#/definitions/OptionPlanDetailedResponseDTO'
+    get:
+      tags:
+        - Company Stock Options
+      summary: Getting existing option plans
+      description: should retrund all option plans by client id
+      operationId: getDetailsForOptionPlan
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: "client_id"
+          in: path
+          type: string
+          required: true
+          description: uuid
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/OptionPlanDashboardDTO"
+        '400':
+          description: Invalid ID supplied
   /admin/v1/option-plan/{plan_id}/client/{client_id}:
     put:
       tags:
@@ -66,7 +96,7 @@ paths:
       responses:
         '200':
           schema:
-            $ref: '#/definitions/OptionPlanResponseDTO'
+            $ref: '#/definitions/OptionPlanDetailedResponseDTO'
           description: OK
         '400':
           description: Invalid ID supplied
@@ -95,7 +125,7 @@ paths:
         '200':
           description: OK
           schema:
-            $ref: '#/definitions/OptionPlanResponseDTO'
+            $ref: '#/definitions/OptionPlanDetailedResponseDTO'
         '400':
           description: Invalid ID supplied
     delete:
@@ -122,34 +152,8 @@ paths:
       responses:
         '400':
           description: Invalid ID supplied
-  /admin/v1/option-plan/client/{client_id}:
-    get:
-      tags:
-        - Company Stock Options
-      summary: Getting existing option plans
-      description: should retrund all option plans by client id
-      operationId: getDetailsForOptionPlan
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - name: "client_id"
-          in: path
-          type: string
-          required: true
-          description: uuid
-      responses:
-        '200':
-          description: OK
-          schema:
-            type: array
-            items:
-              $ref: "#/definitions/OptionPlanLightResponseDTO"
-        '400':
-          description: Invalid ID supplied
 definitions:
-  OptionPlanLightResponseDTO:
+  OptionPlanDashboardDTO:
     type: object
     properties:
       plan_id:
@@ -189,7 +193,7 @@ definitions:
       total_plan_value:
         type: number
         example: 500.67
-  OptionPlanResponseDTO:
+  OptionPlanDetailedResponseDTO:
     type: object
     properties:
       plan_id:
@@ -199,7 +203,7 @@ definitions:
         type: string
         example: Cisco Co
       asset:
-        $ref: "#/definitions/AssetDto"
+        $ref: "#/definitions/OptionPlanRelatedAssetDTO"
       number_of_shares:
         type: number
         example: 200.00
@@ -243,7 +247,7 @@ definitions:
       option_exercise:
         type: array
         items:
-          $ref: "#/definitions/OptionExerciseDto"
+          $ref: "#/definitions/OptionPlanRelatedExerciseDTO"
         description: "array of exercise"
       notes:
         format: string
@@ -251,7 +255,7 @@ definitions:
       attachments:
         type: array
         items:
-          $ref: "#/definitions/AttachmentsDto"
+          $ref: "#/definitions/OptionPlanRelatedAttachmentsDTO"
   OptionPlanUpdateAndCreateRequestDTO:
     type: object
     required:
@@ -318,7 +322,7 @@ definitions:
       option_exercise:
         type: array
         items:
-          $ref: "#/definitions/OptionExerciseDto"
+          $ref: "#/definitions/OptionPlanRelatedExerciseDTO"
         description: "array of exercise history"
       notes:
         type: string
@@ -326,8 +330,8 @@ definitions:
       attachments:
         type: array
         items:
-          $ref: "#/definitions/AttachmentsDto"
-  OptionExerciseDto:
+          $ref: "#/definitions/OptionPlanRelatedAttachmentsDTO"
+  OptionPlanRelatedExerciseDTO:
     type: object
     required:
       - date
@@ -339,7 +343,7 @@ definitions:
       quantity:
         type: integer
         example: 300
-  AssetDto:
+  OptionPlanRelatedAssetDTO:
     type: object
     properties:
       id:
@@ -358,7 +362,7 @@ definitions:
         type: integer
         example: 826
         description: asset base currency
-  AttachmentsDto:
+  OptionPlanRelatedAttachmentsDTO:
     type: object
     properties:
       id:
