@@ -62,7 +62,7 @@ paths:
           description: request body
           required: true
           schema:
-            $ref: '#/definitions/OptionPlanUpdateRequestDTO'
+            $ref: '#/definitions/OptionPlanUpdateAndCreateRequestDTO'
       responses:
         '200':
           schema:
