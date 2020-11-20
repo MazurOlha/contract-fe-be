@@ -1,0 +1,370 @@
+swagger: '2.0'
+info:
+  description: >-
+    Contract between FE and BE.
+  version: 0.0.1
+  title: Company Stocks Options
+host: "bo-jx-staging.y-tree.uk"
+basePath: "/v1"
+tags:
+  - name: Company Stock Options
+    description: CRUD operations
+schemes:
+  - http
+paths:
+  /admin/v1/option-plan:
+    post:
+      tags:
+        - Company Stock Options
+      summary: create option plan
+      description: uses creating option plan
+      operationId: addOptionPlan
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: request body
+          description: body
+          required: true
+          schema:
+            $ref: '#/definitions/OptionPlanUpdateAndCreateRequestDTO'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/OptionPlanResponseDTO'
+  /admin/v1/option-plan/{plan_id}/client/{client_id}:
+    put:
+      tags:
+        - Company Stock Options
+      summary: Update existing option plan
+      description: update option plan by plan and client id
+      operationId: updateOptionPlan
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: "plan_id"
+          in: path
+          required: true
+          type: string
+          description: uuid
+        - name: "client_id"
+          in: path
+          type: string
+          required: true
+          description: uuid
+        - in: body
+          name: "body"
+          description: request body
+          required: true
+          schema:
+            $ref: '#/definitions/OptionPlanUpdateRequestDTO'
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/OptionPlanResponseDTO'
+          description: OK
+        '400':
+          description: Invalid ID supplied
+    get:
+      tags:
+        - Company Stock Options
+      summary: Getting existing option plan
+      description: uses for getting option plan details by client and plan id
+      operationId: getOptionPlan
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: "plan_id"
+          in: path
+          required: true
+          type: string
+          description: uuid
+        - name: "client_id"
+          in: path
+          type: string
+          required: true
+          description: uuid
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/OptionPlanResponseDTO'
+        '400':
+          description: Invalid ID supplied
+    delete:
+      tags:
+        - Company Stock Options
+      summary: deleting option plan
+      description: shold delete option plan by option plan and client id
+      operationId: deleteOptionPlan
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: "plan_id"
+          in: path
+          type: string
+          required: true
+          description: uuid
+        - name: "client_id"
+          in: path
+          type: string
+          required: true
+          description: uuid
+      responses:
+        '400':
+          description: Invalid ID supplied
+  /admin/v1/option-plan/client/{client_id}:
+    get:
+      tags:
+        - Company Stock Options
+      summary: Getting existing option plans
+      description: should retrund all option plans by client id
+      operationId: getDetailsForOptionPlan
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: "client_id"
+          in: path
+          type: string
+          required: true
+          description: uuid
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/OptionPlanLightResponseDTO"
+        '400':
+          description: Invalid ID supplied
+definitions:
+  OptionPlanLightResponseDTO:
+    type: object
+    properties:
+      plan_id:
+        type: string
+        example: "b163a34e-26d5-40d2-8a08-282e692d4d2e"
+        description: uuid
+      option_plan_name:
+        type: string
+        example: "Hilton"
+        description: can not be null
+      provider_Id:
+        type: integer
+        example: 780
+      number_of_shares:
+        type: number
+        example: 200.00
+      vesting_start_date:
+        type: integer
+        example: 1605781552
+      vesting_end_date:
+        type: integer
+        example: 1605781600
+      strike_price:
+        type: number
+        example: 100.67
+        description: strikePrice
+      total_net_value:
+        type: number
+        example: 200.67
+        description: totalNetValue
+      current_vested_net_value:
+        type: number
+        example: 300.67
+      total_available_value:
+        type: number
+        example: 400.67
+      total_plan_value:
+        type: number
+        example: 500.67
+  OptionPlanResponseDTO:
+    type: object
+    properties:
+      plan_id:
+        type: string
+        example: "b163a34e-26d5-40d2-8a08-282e692d4d2e"
+      plan_name:
+        type: string
+        example: Cisco Co
+      asset:
+        $ref: "#/definitions/AssetDto"
+      number_of_shares:
+        type: number
+        example: 200.00
+      strike_price:
+        type: number
+        example: 100.67
+      vesting_start_date:
+        type: number
+        example: 1605781552
+      vesting_start_quantity:
+        type: number
+        example: 500
+      time_framne:
+        type: string
+        enum:
+          - "DAILY"
+          - "MONTHLY"
+          - "YEARLY"
+        description: "recurrence time frame"
+      vesting_duration:
+        type: integer
+        example: 60
+      expiration_from_termination:
+        type: integer
+        example: 10
+      delivery_period:
+        type: integer
+        example: 12
+        description: "delivery period in month"
+      selling_restriction:
+        type: integer
+        example: 6
+        description: "selling restriction in month"
+      provider_id:
+        type: integer
+        example: 781
+        description: "option provider id can be 780, 781"
+      portfolio_name:
+        type: string
+        example: "Portfolio_30"
+      option_exercise:
+        type: array
+        items:
+          $ref: "#/definitions/OptionExerciseDto"
+        description: "array of exercise"
+      notes:
+        format: string
+        example: "Portfolio_30"
+      attachments:
+        type: array
+        items:
+          $ref: "#/definitions/AttachmentsDto"
+  OptionPlanUpdateAndCreateRequestDTO:
+    type: object
+    required:
+      - plan_name
+      - isin
+      - number_of_shares
+      - strike_price
+      - vesting_start_date
+      - vesting_start_quantity
+      - time_framne
+      - vesting_duration
+      - expiration_from_termination
+      - delivery_period
+      - selling_restriction
+      - provider_id
+    properties:
+      plan_name:
+        type: string
+        example: Cisco Co
+      isin:
+        type: string
+        example: YPI-123456789
+      number_of_shares:
+        type: number
+        example: 200.00
+        description: option share
+      strike_price:
+        type: number
+        example: 100.66
+      vesting_start_date:
+        type: integer
+        example: 1605781552
+      vesting_start_quantity:
+        type: integer
+        example: 250
+      time_framne:
+        type: string
+        enum:
+          - "DAILY"
+          - "MONTHLY"
+          - "YEARLY"
+        example: YEARLY
+        description: recurrence time frame
+      vesting_duration:
+        type: integer
+        example: 60
+        description: vesting duration in month
+      expiration_from_termination:
+        type: integer
+        example: 10
+        description: expiration from termination in month
+      delivery_period:
+        type: integer
+        example: 12
+        description: delivery period in month
+      selling_restriction:
+        type: integer
+        example: 6
+        description: selling restriction in month
+      provider_id:
+        type: integer
+        example: 781
+        description: option provider id can be 780, 781
+      option_exercise:
+        type: array
+        items:
+          $ref: "#/definitions/OptionExerciseDto"
+        description: "array of exercise history"
+      notes:
+        type: string
+        example: "Portfolio_30"
+      attachments:
+        type: array
+        items:
+          $ref: "#/definitions/AttachmentsDto"
+  OptionExerciseDto:
+    type: object
+    required:
+      - date
+      - quantity
+    properties:
+      date:
+        type: integer
+        example: 1605781600
+      quantity:
+        type: integer
+        example: 300
+  AssetDto:
+    type: object
+    properties:
+      id:
+        type: string
+        example: YPI-160066901307
+        description: asset isin
+      name:
+        type: string
+        example: LEXUS 99 SICAV SA
+        description: asset name
+      price:
+        type: number
+        example: 270.55
+        description: asset price
+      currencyCode:
+        type: integer
+        example: 826
+        description: asset base currency
+  AttachmentsDto:
+    type: object
+    properties:
+      id:
+        type: string
+        example: ae5ab2f2-76c7-47d1-9ee1-3f1a67bc154e
+        description: uuid
+      position:
+        type: integer
+        example: 1
