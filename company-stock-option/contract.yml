@@ -251,7 +251,8 @@ definitions:
         description: "array of exercise"
       vesting_schedule:
         type: array
-        items: numbers
+        items: 
+          type:number
         example: [1.66667, 2.3456]  
       notes:
         format: string
@@ -331,7 +332,8 @@ definitions:
         description: "array of exercise history"
       vesting_schedule:
         type: array
-        items: numbers
+        items:
+          type: number
         example: [1.66667, 2.3456]
       notes:
         type: string
