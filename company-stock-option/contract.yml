@@ -249,6 +249,10 @@ definitions:
         items:
           $ref: "#/definitions/OptionPlanExerciseItem"
         description: "array of exercise"
+      vesting_schedule:
+        type: array
+        items: numbers
+        example: [1.66667, 2.3456]  
       notes:
         format: string
         example: "Portfolio_30"
@@ -271,6 +275,7 @@ definitions:
       - delivery_period
       - selling_restriction
       - provider_id
+      - vesting_schedule
     properties:
       plan_name:
         type: string
@@ -324,6 +329,10 @@ definitions:
         items:
           $ref: "#/definitions/OptionPlanExerciseItem"
         description: "array of exercise history"
+      vesting_schedule:
+        type: array
+        items: numbers
+        example: [1.66667, 2.3456]
       notes:
         type: string
         example: "Portfolio_30"
@@ -358,7 +367,7 @@ definitions:
         type: number
         example: 270.55
         description: asset price
-      currencyCode:
+      currency_code:
         type: integer
         example: 826
         description: asset base currency
