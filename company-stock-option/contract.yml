@@ -252,7 +252,7 @@ definitions:
       vesting_schedule:
         type: array
         items: 
-          type:number
+          type: number
         example: [1.66667, 2.3456]  
       notes:
         format: string
